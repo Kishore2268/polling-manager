@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function VoteTable() {
+  // State to store votes, loading status, and error message
   const [votes, setVotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch votes from the server on component mount
   useEffect(() => {
     const fetchVotes = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/data');
+        const response = await axios.get('https://polling-manager.onrender.com/data');
         setVotes(response.data);
         setError(null);
       } catch (err) {
@@ -22,6 +24,7 @@ export default function VoteTable() {
     fetchVotes();
   }, []);
 
+  // Display loading spinner while fetching data
   if (loading) {
     return (
       <div className="bg-white shadow-xl rounded-2xl p-6">
@@ -35,6 +38,7 @@ export default function VoteTable() {
     );
   }
 
+  // Display error message if fetching fails
   if (error) {
     return (
       <div className="bg-white shadow-xl rounded-2xl p-6">
@@ -54,6 +58,7 @@ export default function VoteTable() {
     );
   }
 
+  // Render the vote table
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-gray-300">
       <div className="px-6 py-8">

@@ -1,4 +1,4 @@
-// BarChart.jsx
+// Import necessary libraries
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,16 +23,18 @@ ChartJS.register(
 );
 
 export default function BarChart() {
+  // State to manage chart data, loading status, and error message
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch vote results from the server when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/results');
-        setData(response.data);
-        setError(null);
+        const response = await axios.get('https://polling-manager.onrender.com/results'); 
+        setData(response.data); 
+        setError(null); 
       } catch (err) {
         setError('Failed to fetch vote results');
       } finally {
@@ -40,8 +43,9 @@ export default function BarChart() {
     };
 
     fetchData();
-  }, []);
+  }, []); 
 
+  // Display loading spinner while fetching data
   if (loading) {
     return (
       <div className="bg-white shadow-xl rounded-2xl p-6">
@@ -55,6 +59,7 @@ export default function BarChart() {
     );
   }
 
+  // Display error message if fetching fails
   if (error) {
     return (
       <div className="bg-white shadow-xl rounded-2xl p-6">
@@ -74,6 +79,7 @@ export default function BarChart() {
     );
   }
 
+  // Prepare chart data
   const chartData = {
     labels: ['Yes', 'No'],
     datasets: [
@@ -93,9 +99,10 @@ export default function BarChart() {
     ],
   };
 
+  // Chart options
   const options = {
-    responsive: true,
-    maintainAspectRatio: false,
+    responsive: true, 
+    maintainAspectRatio: false, 
     plugins: {
       legend: {
         display: false,
@@ -113,16 +120,18 @@ export default function BarChart() {
           bottom: 30,
         },
       },
+      // Tooltip customization
       tooltip: {
         callbacks: {
           label: function(context) {
-            const total = data.yes_count + data.no_count;
-            const percentage = ((context.raw / total) * 100).toFixed(1);
+            const total = data.yes_count + data.no_count; // Calculate total votes
+            const percentage = ((context.raw / total) * 100).toFixed(1); // Calculate percentage
             return `${context.raw} votes (${percentage}%)`;
           }
         }
       }
     },
+    // Customize the appearance of the chart
     scales: {
       y: {
         beginAtZero: true,
@@ -151,6 +160,7 @@ export default function BarChart() {
     },
   };
 
+  // Render the bar chart
   return (
     <div className="bg-white border border-gray-300 rounded-2xl overflow-hidden">
       <div className="px-6 py-8">

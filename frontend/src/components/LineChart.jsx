@@ -1,4 +1,4 @@
-// LineChart.jsx
+// Import necessary libraries
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
@@ -13,6 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,14 +25,16 @@ ChartJS.register(
 );
 
 export default function LineChart() {
+  // State to manage chart data, loading status, and error message
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch vote counts from the server on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/counts');
+        const response = await axios.get('https://polling-manager.onrender.com/counts');
         setData(response.data);
         setError(null);
       } catch (err) {
@@ -44,6 +47,7 @@ export default function LineChart() {
     fetchData();
   }, []);
 
+  // Display loading spinner while fetching data
   if (loading) {
     return (
       <div className="bg-white border border-gray-300 rounded-2xl p-6">
@@ -57,6 +61,7 @@ export default function LineChart() {
     );
   }
 
+  // Display error message if fetching fails
   if (error) {
     return (
       <div className="bg-white shadow-xl rounded-2xl p-6">
@@ -76,6 +81,7 @@ export default function LineChart() {
     );
   }
 
+  // Prepare chart data
   const chartData = {
     labels: data.map(item => new Date(item.casted_at).toLocaleDateString()),
     datasets: [
@@ -96,6 +102,7 @@ export default function LineChart() {
     ],
   };
 
+  // Chart options
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -156,6 +163,7 @@ export default function LineChart() {
     },
   };
 
+  // Render the line chart
   return (
     <div className="bg-white border border-gray-300 rounded-2xl overflow-hidden">
       <div className="px-6 py-8">

@@ -1,13 +1,16 @@
+// Import required modules
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const cors = require('cors');
 const { body, validationResult } = require('express-validator');
 require('dotenv').config();
 
+// Initialize Express app and Prisma client
 const app = express();
 const prisma = new PrismaClient();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
+// Enable CORS and JSON parsing
 app.use(cors());
 app.use(express.json());
 
@@ -160,4 +163,5 @@ app.get('/results', async (req, res, next) => {
 // Apply error handling middleware
 app.use(errorHandler);
 
+// Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));

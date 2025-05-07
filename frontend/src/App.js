@@ -1,3 +1,4 @@
+// Import necessary components
 import VoteForm from './components/VoteForm';
 import VoteTable from './components/VoteTable';
 import LineChart from './components/LineChart';
@@ -5,9 +6,13 @@ import BarChart from './components/BarChart';
 import { useState } from 'react';
 
 function App() {
+  // State to trigger refresh of components
   const [refresh, setRefresh] = useState(false);
-  const triggerRefresh = () => setRefresh(!refresh);
+  // Function to toggle refresh state
+  // This function is passed to VoteForm to trigger a refresh when a vote is cast
+  const triggerRefresh = () => setRefresh(!refresh); 
 
+  // Render the main application layout
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50">
       <header className="bg-white border-b border-gray-100">
@@ -31,7 +36,7 @@ function App() {
             <section className="group relative border border-gray-200 rounded-2xl">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl blur opacity-0 group-hover:opacity-75"></div>
               <div className="relative">
-                <VoteForm onSuccess={triggerRefresh} />
+                <VoteForm onSuccess={triggerRefresh} /> {/* Pass the refresh function to VoteForm */}
               </div>
             </section>
 
@@ -41,7 +46,7 @@ function App() {
               <div className="relative">
                 <div className="bg-white shadow-xl rounded-2xl p-6">
                   <h2 className="text-2xl font-semibold text-gray-800 mb-6">Recent Votes</h2>
-                  <VoteTable key={refresh} />
+                  <VoteTable key={refresh} /> {/* Pass the refresh state to VoteTable */}
                 </div>
               </div>
             </section>
@@ -53,7 +58,7 @@ function App() {
                 <div className="relative">
                   <div className="bg-white shadow-xl rounded-2xl p-6">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-6">Vote Trends</h2>
-                    <LineChart key={refresh} />
+                    <LineChart key={refresh} /> {/* Pass the refresh state to LineChart */}
                   </div>
                 </div>
               </div>
@@ -62,7 +67,7 @@ function App() {
                 <div className="relative">
                   <div className="bg-white shadow-xl rounded-2xl p-6">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-6">Overall Results</h2>
-                    <BarChart key={refresh} />
+                    <BarChart key={refresh} /> {/* Pass the refresh state to BarChart */}
                   </div>
                 </div>
               </div>

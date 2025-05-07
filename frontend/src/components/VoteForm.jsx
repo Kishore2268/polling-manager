@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function VoteForm({ onSuccess }) {
+  // State to manage form data, loading status, error, and success message
   const [form, setForm] = useState({ name: '', voting_choice: 'true', casted_at: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  // Clear success message after 3 seconds
   useEffect(() => {
     let timeout;
     if (success) {
@@ -17,6 +19,7 @@ export default function VoteForm({ onSuccess }) {
     return () => clearTimeout(timeout);
   }, [success]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -24,12 +27,12 @@ export default function VoteForm({ onSuccess }) {
     setSuccess(false);
 
     try {
-      await axios.post('http://localhost:3000/vote', {
+      await axios.post('https://polling-manager.onrender.com/vote', {
         ...form,
-        voting_choice: form.voting_choice === 'true',
+        voting_choice: form.voting_choice === 'true', // Convert string to boolean
       });
-      setSuccess(true);
-      setForm({ name: '', voting_choice: 'true', casted_at: '' });
+      setSuccess(true); // Set success message
+      setForm({ name: '', voting_choice: 'true', casted_at: '' }); // Reset form
       onSuccess();
     } catch (err) {
       setError(err.response?.data?.errors || [{ msg: 'Failed to submit vote' }]);
@@ -38,6 +41,7 @@ export default function VoteForm({ onSuccess }) {
     }
   };
 
+  // Render the vote form
   return (
     <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
       <div className="px-6 py-8">
